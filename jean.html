@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jean Kiiza - Personal Blog</title>
+    <style>
+        :root {
+            --bg-color: #f0f4f8;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --text-secondary: #555555;
+            --accent-color: #0f5c63;
+            --accent-hover: #0b4449;
+            --border-color: #dcdcdc;
+            --modal-bg: rgba(0, 0, 0, 0.6);
+            --transition-speed: 0.3s;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --text-secondary: #aaaaaa;
+            --accent-color: #1e88e5;
+            --accent-hover: #42a5f5;
+            --border-color: #333333;
+            --modal-bg: rgba(0, 0, 0, 0.8);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+            font-size: 18px;
+        }
+
+        header {
+            max-width: 1100px;
+            margin: 0 auto 40px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 20px;
+        }
+
+        .top-bar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid #e0a526;
+            text-align: center;
+        }
+
+        .header-titles h1 {
+            font-size: 1.8rem;
+            color: red;
+            text-transform: capitalize;
+        }
+
+        .header-titles p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 2px solid var(--accent-color);
+            color: var(--text-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--accent-color);
+            color: #ffffff;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .intro-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            align-items: center;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .intro-section {
+                flex-direction: row;
+                text-align: left;
+            }
+        }
+
+        .profile-photo {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid var(--accent-color);
+        }
+
+        .intro-text h2 {
+            margin-bottom: 15px;
+            color: blue;
+        }
+
+        .intro-text p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            color: blue;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+            border-left: 5px solid var(--accent-color);
+            padding-left: 10px;
+        }
+
+        .sessions-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        @media (min-width: 650px) {
+            .sessions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 950px) {
+            .sessions-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .session-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        .session-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .session-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: blue;
+        }
+
+        .session-card p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            margin-bottom: 20px;
+        }
+
+        .btn-details {
+            background-color: var(--accent-color);
+            color: #ffffff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .btn-details:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--modal-bg);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(card-bg);
+            border: 1px solid var(border-color);
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 550px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 15px;
+            color: blue;
+        }
+
+        .modal-content p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--text-color);
+            cursor: pointer;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+        }
+
+        .message-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            color: #555;
+            font-size: 0.9rem;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div class="top-bar">JK</div>
+            <div class="header-titles">
+                <h1>welcome to my personal blog</h1>
+                <p>Sharing experiences, learning journey, interests, and ideas</p>
+            </div>
+        </div>
+        <button class="theme-toggle" id="themeToggleBtn">Switch Theme</button>
+    </header>
+
+    <main>
+        <!-- Intro Section -->
+        <section class="intro-section">
+            <img src="jean.jpeg" alt="computing journey" class="profile-photo">
+            <div class="intro-text">
+                <h2>ABOUT ME</h2>
+                <p>Hello welcome to my personal blog! This is a space where I share <mark>my experiences, learning journey, interests, and ideas. I have a belief that every day offers an opportunity to learn something new, develop useful skills, and become a better version of ourselves.</mark></p>
+                <p>I am a university student with a strong interest in technology, personal development, and solving real world problems. I enjoy learning new things, exploring creative ideas, and discovering how technology can make life easier.</p>
+            </div>
+        </section>
+
+        <h2>Explore My Blog Sessions</h2>
+        
+        <div class="sessions-grid">
+            
+            <div class="session-card">
+                <div>
+                    <img src="muk.jpeg" alt="My Learning Journey">
+                    <h3>Session 1: Makerere Academic Journey</h3>
+                    <p>My journey in Information Systems And Technology at Makerere University, focusing on programming, databases, and turning data into useful insights.</p>
+                </div>
+                <button class="btn-details" onclick="openModal('modal1')">View Session Info</button>
+            </div>
+
+            
+            <div class="session-card">
+                <div>
+                    <img src="techno.jpeg" alt="solving technological problem">
+                    <h3>Session 2: Goals & Ambitions</h3>
+                    <p>Developing technical skills, analytical capabilities, leadership, and teamwork to create solutions that benefit individuals and communities.</p>
+                </div>
+                <button class="btn-details" onclick="openModal('modal2')">View Session Info</button>
+            </div>
+
+            
+            <div class="session-card">
+                <div>
+                    <img src="stair.jpeg" alt="what i believe">
+                    <h3>Session 3: Interests, Hobbies & Motto</h3>
+                    <p>"Small steps every day lead to real achievements." Exploring technology, maintaining balance, and building a better future.</p>
+                </div>
+                <button class="btn-details" onclick="openModal('modal3')">View Session Info</button>
+            </div>
+        </div>
+
+        
+        <section class="message-section">
+            <h2>LEAVE A MESSAGE HERE</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 10px;">This is a textarea:</p>
+            <textarea name="message" rows="5">this semester i must pass highly as all possible.</textarea>
+        </section>
+    </main>
+
+    
+    <div class="modal" id="modal1">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('modal1')">&times;</button>
+            <h2>Session 1: My Learning Journey at Makerere</h2>
+            <p>My journey in Information Systems And Technology is helping me understand how digital systems work and how they can be used to solve everyday challenges.</p>
+            <p>I am particularly interested in programming, databases, and data analysis. Learning these areas teaches me how to organize information, build applications, and turn data into useful insights.</p>
+            <p>Although learning technology can sometimes be challenging, I see every challenge as an opportunity to improve. My goal is to continue developing my technical skills and use them to create solutions that benefit individuals and communities.</p>
+            <button class="btn-details" onclick="closeModal('modal1')">Close Window</button>
+        </div>
+    </div>
+
+    
+    <div class="modal" id="modal2">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('modal2')">&times;</button>
+            <h2>Session 2: My Goals and Ambitions</h2>
+            <p>My goal is to become a knowledgeable, innovative, and responsible professional who uses technology to solve meaningful problems.</p>
+            <p>I want to strengthen my programming and analytical skills, gain practical experience, and participate in projects that create positive change.</p>
+            <p>Beyond my academic success, I hope to develop leadership, communication, and teamwork skills. I believe that success comes from consistency, curiosity, hard work, and the willingness to learn from mistakes.</p>
+            <button class="btn-details" onclick="closeModal('modal2')">Close Window</button>
+        </div>
+    </div>
+
+    
+    <div class="modal" id="modal3">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('modal3')">&times;</button>
+            <h2>Session 3: Interests, Hobbies & Personal Motto</h2>
+            <p><strong>Personal Motto:</strong> "Small steps every day lead to real achievements."</p>
+            <p>I believe that progress does not always happen overnight. Every new skill learned, every challenge overcome, and every lesson gained contributes to a better future.</p>
+            <p>Outside my academic work, I value activities that help me grow, stay curious, and understand the world around me. Some of the interests I enjoy exploring include technology, learning new skills, discovering innovative ideas, and working with others.</p>
+            <button class="btn-details" onclick="closeModal('modal3')">Close Window</button>
+        </div>
+    </div>
+
+    <footer>
+        <p style="margin-bottom: 8px;"><strong>Contact Me:</strong></p>
+        <p style="margin: 4px 0;">
+            📧 Email: <a href="mailto:jeankiiza80@gmail.com" style="color: #0f5c63; text-decoration: none;">jeankiiza80@gmail.com</a>
+        </p>
+        <p style="margin: 4px 0;">
+            📞 Phone: <a href="tel:+256793380459" style="color: #0f5c63; text-decoration: none;">(079) 338-0459</a>
+        </p>
+        <p style="margin-top: 15px;">&copy; 2026 Jean Kiiza. All rights reserved.</p>
+    </footer>
+
+    <script>
+        
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const htmlElement = document.documentElement;
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                htmlElement.removeAttribute('data-theme');
+                themeToggleBtn.textContent = 'Dark Mode';
+            } else {
+                htmlElement.setAttribute('data-theme', 'dark');
+                themeToggleBtn.textContent = 'Light Mode';
+            
+            }
+        });
+
+        
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Close modal when clicking outside the content box
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
