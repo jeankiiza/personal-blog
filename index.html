@@ -27,6 +27,42 @@
             --border-color: #333333;
             --modal-bg: rgba(0, 0, 0, 0.8);
         }
+        [data-theme="ocean"] {
+--bg-color: aliceblue;
+--card-bg: white;
+--text-color: navy;
+--text-secondary: steelblue;
+--accent-color: dodgerblue;
+--accent-hover: royalblue;
+--border-color: lightblue;
+}
+ 
+[data-theme="forest"] {
+--bg-color: honeydew;
+--card-bg: white;
+--text-color: darkgreen;
+--text-secondary: seagreen;
+--accent-color: green;
+--accent-hover: forestgreen;
+--border-color: lightgreen;
+}
+        const themes = ["dark", "ocean", "forest"];
+let currentTheme = -1;
+
+themeToggleBtn.addEventListener("click", () => {
+    currentTheme++;
+
+    if (currentTheme >= themes.length) {
+        currentTheme = -1;
+        document.documentElement.removeAttribute("data-theme");
+        return;
+    }
+
+    document.documentElement.setAttribute("data-theme", themes[currentTheme]);
+});
+
+        
+
 
         * {
             box-sizing: border-box;
